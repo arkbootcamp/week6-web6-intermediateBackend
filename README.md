@@ -32,3 +32,7 @@ Open .env file on your favorite code editor, and copy paste this code below :
 ```
 DB_HOST=localhost // Database host
 ```
+
+## License
+
+© [Bagus Tri Harjanto](https://github.com/bagusth15/)
