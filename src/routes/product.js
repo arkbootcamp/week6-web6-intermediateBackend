@@ -1,21 +1,14 @@
 const router = require('express').Router()
-const { getProduct, postProduct } = require('../controller/product')
-// const product = require('../controller/product')
+const {
+  getProduct,
+  getProductById,
+  postProduct,
+  patchProduct
+} = require('../controller/product')
 
-router.get('/', getProduct)
+router.get('/', getProduct) // http://localhost:3000/product
+router.get('/:id', getProductById) // http://localhost:3000/product/1
 router.post('/', postProduct)
-
-// router.get('/product', (request, response) => {
-//   const data = {
-//     data: [
-//       {
-//         product_id: 1,
-//         product_name: 'Meja',
-//         product_status: 1
-//       }
-//     ]
-//   }
-//   response.status(200).send(data)
-// })
+router.patch('/:id', patchProduct)
 
 module.exports = router
