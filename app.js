@@ -7,7 +7,8 @@ const cors = require('cors')
 const routesNavigation = require('./src/routesNavigation')
 
 const app = express()
-morgan('dev')
+app.use(morgan('dev'))
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 // ====================
