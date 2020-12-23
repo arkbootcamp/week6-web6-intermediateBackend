@@ -7,6 +7,8 @@ const {
 } = require('../model/product')
 const helper = require('../helper/response')
 const qs = require('querystring')
+const redis = require('redis')
+const client = redis.createClient()
 
 module.exports = {
   getProduct: async (request, response) => {
@@ -36,6 +38,15 @@ module.exports = {
         prevLink: prevLink && `http://localhost:3000/product?${prevLink}`
       }
       const result = await getProductModel(limit, offset)
+      const newData = {
+        result,
+        pageInfo
+      }
+      client.setex(
+        `getproduct:${JSON.stringify(request.query)}`,
+        3600,
+        JSON.stringify(newData)
+      )
       return helper.response(
         response,
         200,
@@ -53,6 +64,7 @@ module.exports = {
       const { id } = request.params
       const result = await getProductByIdModel(id)
       if (result.length > 0) {
+        client.setex(`getproductbyid:${id}`, 3600, JSON.stringify(result))
         return helper.response(
           response,
           200,
@@ -75,13 +87,16 @@ module.exports = {
         product_status
       } = request.body
       // disini kondisi validation
+
       const setData = {
         category_id,
         product_name,
         product_price,
+        product_image: request.file === undefined ? '' : request.file.filename,
         product_created_at: new Date(),
         product_status
       }
+      console.log(setData)
       // const result = await postProductModel(setData)
       // return helper.response(response, 200, 'Success Post Product', result)
     } catch (error) {
