@@ -17,13 +17,19 @@ module.exports = {
           return helper.response(response, 400, error.message)
         } else {
           // proses pengecekan role
-          console.log(result)
-          request.token = result
+          // console.log(result)
+          request.decodeToken = result
           next()
         }
       })
     } else {
       return helper.response(response, 400, 'Please Login First !')
     }
+  },
+  isAdmin: (request, response, next) => {
+    console.log('middleware isAdmin')
+    console.log(request.decodeToken) // akan ada property user_role
+    // chek kondisi apakah rolenya bisa akses atau tidak
+    next()
   }
 }

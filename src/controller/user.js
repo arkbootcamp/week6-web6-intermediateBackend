@@ -42,8 +42,9 @@ module.exports = {
             user_id,
             user_name,
             user_email
+            // user role dan status masuk
           }
-          const token = jwt.sign(payload, 'RAHASIA', { expiresIn: '5s' })
+          const token = jwt.sign(payload, 'RAHASIA', { expiresIn: '3h' })
           const result = { ...payload, token }
           return helper.response(response, 200, 'Success Login !', result)
         } else {

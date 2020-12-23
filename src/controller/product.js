@@ -82,8 +82,8 @@ module.exports = {
         product_created_at: new Date(),
         product_status
       }
-      const result = await postProductModel(setData)
-      return helper.response(response, 200, 'Success Post Product', result)
+      // const result = await postProductModel(setData)
+      // return helper.response(response, 200, 'Success Post Product', result)
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
     }
