@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 08, 2020 at 05:10 AM
+-- Generation Time: Dec 29, 2020 at 10:05 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.1.28
 
@@ -55,6 +55,7 @@ CREATE TABLE `product` (
   `category_id` int(11) NOT NULL,
   `product_name` varchar(100) NOT NULL,
   `product_price` int(10) NOT NULL,
+  `product_image` varchar(255) NOT NULL,
   `product_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `product_updated_at` datetime NOT NULL,
   `product_status` int(1) NOT NULL
@@ -64,8 +65,42 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `category_id`, `product_name`, `product_price`, `product_created_at`, `product_updated_at`, `product_status`) VALUES
-(1, 3, 'Meja', 100000, '2020-12-08 10:17:25', '0000-00-00 00:00:00', 1);
+INSERT INTO `product` (`product_id`, `category_id`, `product_name`, `product_price`, `product_image`, `product_created_at`, `product_updated_at`, `product_status`) VALUES
+(1, 2, 'Kipas', 150000, '', '2020-12-08 10:17:25', '2020-12-23 07:39:49', 1),
+(2, 1, 'Kursi', 50000, '', '2020-12-09 07:59:44', '0000-00-00 00:00:00', 1),
+(3, 2, 'Kipas', 150000, '', '2020-12-09 08:06:54', '2020-12-09 09:47:10', 1),
+(4, 1, 'Kursi', 50000, '', '2020-12-09 08:42:16', '0000-00-00 00:00:00', 1),
+(5, 1, 'Kursi', 0, '', '2020-12-09 08:53:43', '0000-00-00 00:00:00', 1),
+(6, 1, 'Kursi', 0, '', '2020-12-09 08:54:14', '0000-00-00 00:00:00', 1),
+(7, 1, 'Kursi', 50000, '', '2020-12-09 08:54:28', '0000-00-00 00:00:00', 1),
+(8, 1, 'Kursi', 0, '', '2020-12-09 08:59:36', '0000-00-00 00:00:00', 1),
+(9, 1, 'Kursi', 50000, '', '2020-12-11 10:23:05', '0000-00-00 00:00:00', 1),
+(10, 1, 'Kipas', 50000, '', '2020-12-16 04:25:08', '0000-00-00 00:00:00', 0),
+(11, 1, 'Galon', 100000, '', '2020-12-16 04:39:08', '0000-00-00 00:00:00', 1),
+(12, 1, 'Mouse', 5000, '', '2020-12-16 04:49:42', '0000-00-00 00:00:00', 1),
+(13, 1, 'Kursi', 50000, '', '2020-12-16 04:52:50', '0000-00-00 00:00:00', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user`
+--
+
+CREATE TABLE `user` (
+  `user_id` int(11) NOT NULL,
+  `user_name` varchar(50) NOT NULL,
+  `user_email` varchar(100) NOT NULL,
+  `user_password` varchar(255) NOT NULL,
+  `user_created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `user_updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`user_id`, `user_name`, `user_email`, `user_password`, `user_created_at`, `user_updated_at`) VALUES
+(1, 'Bagus Tri Harjanto', 'bagustri15@gmail.com', '$2b$10$b/FyTruLFJgsl3K01G2X8u0fq1OqIjwfJ/zfzqR5TIJm2sw1ZbuBO', '2020-12-22 07:49:04', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -84,6 +119,12 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`product_id`);
 
 --
+-- Indexes for table `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`user_id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -97,7 +138,13 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `user`
+--
+ALTER TABLE `user`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

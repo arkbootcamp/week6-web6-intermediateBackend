@@ -3,7 +3,7 @@ const helper = require('../helper/response')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploads')
+    cb(null, './uploads/user_image')
   },
   filename: function (req, file, cb) {
     console.log(file)
@@ -23,6 +23,7 @@ const fileFilter = (req, file, cb) => {
 
 const upload = multer({ storage, fileFilter }).single('product_image')
 
+// proses middleware error handling
 const uploadFilter = (req, res, next) => {
   upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {

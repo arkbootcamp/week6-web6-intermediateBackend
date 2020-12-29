@@ -13,6 +13,7 @@ const client = redis.createClient()
 module.exports = {
   getProduct: async (request, response) => {
     try {
+      console.log(request.decodeToken)
       let { page, limit } = request.query
       page = parseInt(page)
       limit = parseInt(limit)
@@ -96,9 +97,15 @@ module.exports = {
         product_created_at: new Date(),
         product_status
       }
-      console.log(setData)
       // const result = await postProductModel(setData)
       // return helper.response(response, 200, 'Success Post Product', result)
+      console.log(setData)
+      // if (condition) {
+
+      // } else {
+      //   fs.unlink(....)
+      //   return helper.response(response, 400, 'Failed Post Data Because Product Name')
+      // }
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
     }
