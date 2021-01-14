@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const nodemailer = require('nodemailer')
 const helper = require('../helper/response')
 const { registerUserModel, checkEmailModel } = require('../model/user')
 
@@ -55,6 +56,46 @@ module.exports = {
       }
     } catch (error) {
       return helper.response(response, 400, 'Bad Request', error)
+    }
+  },
+  forgotPassword: async (request, response) => {
+    try {
+      // https://myaccount.google.com/u/3/lesssecureapps?pli=1&rapt=AEjHL4PwrGKni81Ds5ZdQe2-3TSvpboyIiNBfeyflAPbZeRDOEEWFGhrGZQx3mhcbhbmLW-mW5wzigMcZ6NX3N-yvAquwjEcRA
+      console.log(request.body)
+      const { user_email } = request.body
+      const checkDataUser = await checkEmailModel(user_email)
+      if (checkDataUser.length >= 1) {
+        const keys = '1234' // buat generate angka bisa 4/6 angka
+        const transporter = nodemailer.createTransport({
+          host: 'smtp.gmail.com',
+          port: 587,
+          secure: false, // true for 465, false for other ports
+          auth: {
+            user: 'ISI EMAIL', // generated ethereal user
+            pass: 'ISI PASSWORD' // generated ethereal password
+          }
+        })
+        const mailOptions = {
+          from: '"Coffee Shop 👻" <memo.in.aja@gmail.com>', // sender address
+          to: user_email, // list of receivers
+          subject: 'Coffe Shop - Forgot Password', // Subject line
+          html: `Your Code is <b>${keys}</b>` // html body
+          // html: `<a href="http://localhost:8080/changePassword?keys=${keys}">Click Here To Change Password</a>`,
+        }
+        await transporter.sendMail(mailOptions, function (error, info) {
+          if (error) {
+            console.log(error)
+            return helper.response(response, 400, 'Email not send !')
+          } else {
+            console.log(info)
+            return helper.response(response, 200, 'Email has been send !')
+          }
+        })
+      } else {
+        return helper.response(response, 400, 'Email / Account not Registed !')
+      }
+    } catch (error) {
+      console.log(error)
     }
   }
 }
