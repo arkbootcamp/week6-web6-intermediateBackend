@@ -97,9 +97,8 @@ module.exports = {
         product_created_at: new Date(),
         product_status
       }
-      // const result = await postProductModel(setData)
-      // return helper.response(response, 200, 'Success Post Product', result)
-      console.log(setData)
+      const result = await postProductModel(setData)
+      return helper.response(response, 200, 'Success Post Product', result)
       // if (condition) {
 
       // } else {

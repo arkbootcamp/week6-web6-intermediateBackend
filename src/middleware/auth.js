@@ -14,7 +14,7 @@ module.exports = {
           (error && error.name === 'TokenExpiredError')
         ) {
           console.log(error)
-          return helper.response(response, 400, error.message)
+          return helper.response(response, 403, error.message)
         } else {
           // proses pengecekan role
           // console.log(result)
@@ -23,7 +23,7 @@ module.exports = {
         }
       })
     } else {
-      return helper.response(response, 400, 'Please Login First !')
+      return helper.response(response, 403, 'Please Login First !')
     }
   },
   isAdmin: (request, response, next) => {
