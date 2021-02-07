@@ -24,7 +24,7 @@ app.use((request, response, next) => {
 })
 // ====================
 
-app.use('/', routesNavigation)
+app.use('/api1', routesNavigation)
 
 app.get('*', (request, response) => {
   response.status(404).send('Path not found !')

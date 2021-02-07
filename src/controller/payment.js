@@ -1,5 +1,6 @@
 const { createPayment } = require('../model/payment')
 const midtransClient = require('midtrans-client')
+const helper = require('../helper/response')
 
 module.exports = {
   postPayment: async (request, response) => {
@@ -10,7 +11,7 @@ module.exports = {
       // jika behasil akan mendapatkan booking_id
       // [model 2]
       const booking = await createPayment(bookingId, nominal)
-      console.log(booking)
+      return helper.response(response, 200, 'Success Booking Schedule', booking)
     } catch (error) {
       console.log(error)
     }
