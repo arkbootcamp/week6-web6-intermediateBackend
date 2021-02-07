@@ -8,7 +8,6 @@ const routesNavigation = require('./src/routesNavigation')
 
 const app = express()
 app.use(morgan('dev'))
-app.use(express.static('uploads'))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -25,6 +24,12 @@ app.use((request, response, next) => {
 // ====================
 
 app.use('/api1', routesNavigation)
+// ubah bagian static yang sebelumnya seperti :
+// app.use(express.static('uploads'))
+// menjadi :
+app.use('/api1/fileUploadsApi1', express.static('uploads'))
+// untuk akses gambarnya nanti akan https://backend-web6.fwebdev.online/api1/fileUploadsApi1/nama_gambarnya
+// jika gambarnya masuk kedalam folder maka nanti akan https://backend-web6.fwebdev.online/api1/fileUploadsApi1/folder_gambar/nama_gambarnya
 
 app.get('*', (request, response) => {
   response.status(404).send('Path not found !')
