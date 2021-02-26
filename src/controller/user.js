@@ -4,6 +4,8 @@ const nodemailer = require('nodemailer')
 const helper = require('../helper/response')
 const { registerUserModel, checkEmailModel } = require('../model/user')
 
+let dataRefreshToken = {}
+
 module.exports = {
   registerUser: async (request, response) => {
     try {
@@ -45,8 +47,12 @@ module.exports = {
             user_email
             // user role dan status masuk
           }
-          const token = jwt.sign(payload, 'RAHASIA', { expiresIn: '3h' })
-          const result = { ...payload, token }
+          const token = jwt.sign(payload, 'RAHASIA', { expiresIn: "5s" })
+          const refreshToken = jwt.sign(payload, 'RAHASIA', { expiresIn: '48h' })
+          // memasukkan data ke dalam variabel dataRefreshToken
+          dataRefreshToken[user_id] = refreshToken
+          console.log(dataRefreshToken);
+          const result = { ...payload, token, refreshToken }
           return helper.response(response, 200, 'Success Login !', result)
         } else {
           return helper.response(response, 400, 'Wrong Password !')
@@ -93,6 +99,37 @@ module.exports = {
         })
       } else {
         return helper.response(response, 400, 'Email / Account not Registed !')
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  },
+  refreshToken: async (request, response) => {
+    try {
+      const {userId, refreshToken} = request.body
+      // userId in dataRefreshToken
+      // mengecek properti user id ada atau tidak di dalam datarefreshtoken
+      // dataRefreshToken[userId] === refreshToken
+      // mengecek refreshtoken dengan userid yang dimasukan sama atau tidak dengan refresh token yg diinputkan
+      if (userId in dataRefreshToken && dataRefreshToken[userId] === refreshToken) {
+        jwt.verify(refreshToken, 'RAHASIA', (error, result) => {
+          if (
+            (error && error.name === 'JsonWebTokenError') ||
+            (error && error.name === 'TokenExpiredError')
+          ) {
+            return helper.response(response, 403, error.message)
+          } else {
+            delete result.iat
+            delete result.exp
+            const token = jwt.sign(result, 'RAHASIA', { expiresIn: '1h' })
+            const newRefreshToken = jwt.sign(result, 'RAHASIA', { expiresIn: '48h' })
+            dataRefreshToken[userId] = newRefreshToken
+            const payload = {...result, token, refreshToken: newRefreshToken}
+            return helper.response(response, 200, 'Success Refresh Token !', payload)
+          }
+        })
+      } else {
+        return helper.response(response, 403, 'Wrong Refresh Token !')
       }
     } catch (error) {
       console.log(error)
